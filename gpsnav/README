@@ -1,0 +1,2 @@
+Need to reload util connect, some times the sockets make a bad connection, 
+luke in drone_main output, if the gps data is zero's, do  ^c in gpsnav, and reload it

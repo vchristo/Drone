@@ -1,0 +1,54 @@
+WARNING: THIS CODE IS HIGHLY EXPERIMENTAL AND HAS NEVER BEEN TESTED IN THE
+FIELD. DO NOT ASSUME THE RESULTS ARE ACCURATE OR RELIABLE. DO NOT USE IN
+ANY SITUATION WHERE LIFE, SAFETY OR PROPERTY DEPEND ON THE OUTPUT.
+
+This is an example program that shows an approach to calibrating a
+three-axis digital magnetometer, then using the calibration data to
+convert readings to compass headings.
+
+This is free software. See COPYING for details.
+
+Note that this example is intentionally a naive implementation, meant
+as a proof-of-concept that does the simplest thing that can possibly work.
+There are any number of obvious (and non-obvious) optimizations that can
+be made.
+
+Also note that there are quite a few magic constants lurking in
+calibrate.c. All of these are wild guesses, and no particular effort
+has been made to optimize them.
+
+To build, run "make" as a normal user.
+
+To run, you'll need a Raspberry Pi with an HMC5883L magnetometer connected
+to the I2C bus. (The code should be easily adaptable to other platforms,
+though the hmc5883l.c module is somewhat specific to that sensor.)
+
+Start with your vehicle/platform/whatever facing georgraphic North, then
+launch the program. You will need to run it as root (or otherwise arrange
+for user-level access to the I2C bus).
+
+When instructed, turn the sensor slowly clockwise. (It helps if you have
+a stable platform like a turntable, lazy susan or swivel office chair.)
+
+Once you've made a full circle, you should see output like:
+
+Center (52): 0.252788 0.152205 -0.033539
+     | 0.957 -0.289  0.000|
+Rz = | 0.289  0.957  0.000|
+     | 0.000  0.000  1.000|
+N1=0.000 0.159 -0.202; W1=0.152 0.005 -0.008
+     | 1.000  0.000  0.000|
+Rx = | 0.000  0.619 -0.785|
+     | 0.000  0.785  0.619|
+N2=0.000 0.257 0.000; W2=0.152 0.009 -0.001
+     |-1.000  0.000  0.007|
+Ry = | 0.000  1.000  0.000|
+     |-0.007  0.000 -1.000|
+N3=-0.000 0.257 -0.000; W3=-0.152 0.009 -0.000
+    |-0.956  0.294  0.004|
+R = | 0.179  0.593 -0.785|
+    |-0.233 -0.750 -0.619|
+Ready to read...
+
+This should be followed by a continuously-updated heading (in degrees
+to the right of geographic North).
